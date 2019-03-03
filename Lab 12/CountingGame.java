@@ -1,13 +1,5 @@
 import java.io.*;
 import java.util.*;
-
-/**
- * CountingGame is a program that will simulate a children's counting game used to select
- * someone.
- * 
- * @author Charles Hoot
- * @version 4.0
- */
     
 public class CountingGame {
 
