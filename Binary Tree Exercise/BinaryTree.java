@@ -278,38 +278,38 @@ public class BinaryTree<T> implements BinaryTreeInterface<T> {
     } // end LevelOrderIterator
 
     public T getRootData() {
-        return null;
+        return root.getData();
     }
 
-    public int getHeight() {
-        return 0;
+    public int getHeight() { 
+        return root.getHeight();
     }
 
-    public int getNumberOfNodes() {
-        return 0;
+    public int getNumberOfNodes() { 
+        return root.getNumberOfNodes();
     }
 
     public boolean isEmpty() {
-        return false;
+        return root == null;
     }
 
     public void clear() {
-
+        root = null;
     }
 
     public Iterator<T> getPreorderIterator() {
-        return null;
+        return new PreorderIterator();
     }
 
     public Iterator<T> getPostorderIterator() {
-        return null;
+        return new PostorderIterator();
     }
 
     public Iterator<T> getInorderIterator() {
-        return null;
+        return new InorderIterator();
     }
 
     public Iterator<T> getLevelOrderIterator() {
-        return null;
+        return new LevelOrderIterator();
     }
 } // end BinaryTree
