@@ -1,3 +1,5 @@
+package StackAndQueuePackage;
+
 public final class LinkedQueue<T> implements QueueInterface<T> {
 	private Node firstNode;
 	private Node lastNode;
