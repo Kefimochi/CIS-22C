@@ -15,7 +15,7 @@ extends BinaryTree<T> implements SearchTreeInterface<T> {
         setRootNode(new BinaryNode<>(rootEntry));
     } // end constructor
 
-    public void setTree(T rootData) // Disable setTree (see Segment 25.6) {
+    public void setTree(T rootData) { // Disable setTree (see Segment 25.6) {
         throw new UnsupportedOperationException();
     } // end setTree
 
@@ -31,6 +31,57 @@ extends BinaryTree<T> implements SearchTreeInterface<T> {
 
         return oldEntry.get();
     } // end remove
+
+    private BinaryNode<T> removeEntry(BinaryNode<T> rootNode, T entry, ReturnObject oldEntry) {
+        if (rootNode != null) {
+            T rootData = rootNode.getData();
+            int comparison = entry.compareTo(rootData);
+            if (comparison == 0) {
+                oldEntry.set(rootData);
+                rootNode = removeFromRoot(rootNode);
+            } else if (comparison < 0) {
+                BinaryNode<T> leftChild = rootNode.getLeftChild();
+                BinaryNode<T> subtreeRoot = removeEntry(leftChild, entry, oldEntry);
+                rootNode.setLeftChild(subtreeRoot);
+            } else {
+                BinaryNode<T> rightChild = rootNode.getRightChild();
+                rootNode.setRightChild(removeEntry(rightChild, entry, oldEntry));
+            }
+        }
+        return rootNode;
+    }
+
+    private BinaryNode<T> removeFromRoot(BinaryNode<T> rootNode) {
+        if (rootNode.hasLeftChild() && rootNode.hasRightChild()) {
+            BinaryNode<T> leftSubtreeRoot = rootNode.getLeftChild();
+            BinaryNode<T> largestNode = findLargest(leftSubtreeRoot);
+            rootNode.setData(largestNode.getData());
+            rootNode.setLeftChild(removeLargest(leftSubtreeRoot));
+        } else if (rootNode.hasRightChild()) {
+            rootNode = rootNode.getRightChild();
+        } else {
+            rootNode = rootNode.getLeftChild();
+        }
+        return rootNode;
+    }
+
+    private BinaryNode<T> findLargest(BinaryNode<T> rootNode) {
+        if (rootNode.hasRightChild()) {
+            rootNode = findLargest(rootNode.getRightChild());
+        }
+        return rootNode;
+    }
+
+    private BinaryNode<T> removeLargest(BinaryNode<T> rootNode) {
+        if (rootNode.hasRightChild()) {
+            BinaryNode<T> rightChild = rootNode.getRightChild();
+            rightChild = removeLargest(rightChild);
+            rootNode.setRightChild(rightChild);
+        } else {
+            rootNode = rootNode.getLeftChild();
+        }
+        return rootNode;
+    }
 
     private class ReturnObject {
         private T item;
@@ -68,8 +119,41 @@ extends BinaryTree<T> implements SearchTreeInterface<T> {
                 result = findEntry(rootNode.getRightChild(), entry);
             }
         }
+        return result;
     }
+
     public T add(T newEntry) {
-        return null;
+        T result = null;
+        if (isEmpty()) {
+            setRootNode(new BinaryNode<T> (newEntry));
+        } else {
+            result = addEntry(getRootNode(), newEntry);
+        }
+        return result;
+    }
+
+    private T addEntry(BinaryNode<T> rootNode, T newEntry) {
+        assert rootNode != null;
+        T result = null;
+        int comparison = newEntry.compareTo(rootNode.getData());
+
+        if (comparison == 0) {
+            result = rootNode.getData();
+            rootNode.setData(newEntry);
+        } else if (comparison < 0) {
+            if (rootNode.hasLeftChild()) {
+                result = addEntry(rootNode.getLeftChild(), newEntry);
+            } else {
+                rootNode.setLeftChild(new BinaryNode<>(newEntry));
+            }
+        } else {
+            assert comparison > 0;
+            if (rootNode.hasRightChild()) {
+                result = addEntry(rootNode.getRightChild(), newEntry);
+            } else {
+                rootNode.setRightChild(new BinaryNode<>(newEntry));
+            }
+        }
+        return result;
     }
 } // end BinarySearchTree
