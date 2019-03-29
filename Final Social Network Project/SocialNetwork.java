@@ -1,6 +1,6 @@
 import java.util.Iterator;
 
-public class SocialNetwork<T> implements SocialNetworkInterface<T> {
+public class SocialNetwork<T> implements BasicGraphInterface<T> {
     private DictionaryInterface<T, UserInterface<T>> vertices;
     private int edgeCount;
 
@@ -13,19 +13,36 @@ public class SocialNetwork<T> implements SocialNetworkInterface<T> {
         Iterator<UserInterface<T>> vertexIterator = vertices.getValueIterator();
         while (vertexIterator.hasNext()) {
             UserInterface<T> nextVertex = vertexIterator.next();
-            nextVertex.unvisit();
-            nextVertex.setCost(0);
-            nextVertex.setPredecessor(null);
         }
     }
 
     // Used for testing
     public void displayEdges() {
-        System.out.println("\nEdges exist from the first vertex in each line to the other vertices in the line.");
-        System.out.println("(Edge weights are given; weights are zero for unweighted graphs):\n");
+        System.out.println("\nHere's a list of all members and their friends:");
         Iterator<UserInterface<T>> vertexIterator = vertices.getValueIterator();
         while (vertexIterator.hasNext()) {
             ((User<T>) (vertexIterator.next())).display();
+        }
+    }
+
+    public void displayFriends(T name) {
+        System.out.println("Here's a list of all " + name + "'s' friends:");
+        Iterator<User<T>.Edge> vertexIterator = getUser(name).getFriendsIterator();
+        ((User<T>.Edge) (vertexIterator.next())).display();
+    }
+
+    public void displayFriendsOfFriends(T name) {
+        // displayFriends(name); // show all names of friends
+        // Gets User object from the dictionary's value
+        // public UserInterface<T> getUser(T user) {
+        // return vertices.getValue(user);
+        // }
+        // getUser(name).displayFriends();
+        // ListWithIteratorInterface<T> nn;
+        LinkedListWithIterator<T> list = new LinkedListWithIterator();
+        Iterator<User<T>.Edge> vertexIterator = getUser(name).getFriendsIterator();
+        while (vertexIterator.hasNext()) {
+            list.add((User<T>.Edge) (vertexIterator.next()));
         }
     }
 
@@ -34,21 +51,17 @@ public class SocialNetwork<T> implements SocialNetworkInterface<T> {
         return addOutcome == null; // Was addition to dictonary successfull?
     }
 
-    public boolean addEdge(T begin, T end, double edgeWeight) {
+    public boolean addEdge(T begin, T end) {
         boolean result = false;
         UserInterface<T> beginVertex = vertices.getValue(begin); // value is an object!!!
         UserInterface<T> endVertex = vertices.getValue(end); // by reference
         if ((beginVertex != null) && (endVertex != null)) {
-            result = beginVertex.connect(endVertex, edgeWeight);
+            result = beginVertex.connect(endVertex);
         }
         if (result) {
             edgeCount++;
         }
         return result;
-    }
-
-    public boolean addEdge(T begin, T end) {
-        return addEdge(begin, end, 0);
     }
 
     public boolean hasEdge(T begin, T end) {
@@ -65,6 +78,21 @@ public class SocialNetwork<T> implements SocialNetworkInterface<T> {
             }
         }
         return found;
+    }
+
+    // Gets User object from the dictionary's value
+    public UserInterface<T> getUser(T user) {
+        return vertices.getValue(user);
+    }
+
+    // Removes an old key and adds a new one
+    public void renameKey(T existingUser, T newName) {
+        vertices.add(newName, vertices.remove(existingUser));
+    }
+
+    // To search if user name already exists
+    public boolean hasVertex(T vertex) {
+        return vertices.contains(vertex);
     }
 
     public boolean isEmpty() {
