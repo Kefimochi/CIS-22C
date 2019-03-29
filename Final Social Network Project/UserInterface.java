@@ -15,16 +15,19 @@ public interface UserInterface<T> {
      */
     public T getName();
 
-    /**
-     * Connects this vertex and a given vertex with a weighted edge. The two
-     * vertices cannot be the same, and must not already have this edge between
-     * them. In a directed graph, the edge points toward the given vertex.
-     * 
-     * @param endVertex  A vertex in the graph that ends the edge.
-     * @param edgeWeight A real-valued edge weight, if any.
-     * @return True if the edge is added, or false if not.
-     */
-    public boolean connect(UserInterface<T> endVertex, double edgeWeight);
+    public T getPassword();
+
+    public void setPassword(T password);
+
+    public T getStatus();
+
+    public void setStatus(T status);
+
+    public void setName(T name);
+
+    public T getImg();
+
+    public void setImg(T img);
 
     /**
      * Connects this vertex and a given vertex with an unweighted edge. The two
@@ -43,6 +46,13 @@ public interface UserInterface<T> {
      * @return An iterator of the neighboring vertices of this vertex.
      */
     public Iterator<UserInterface<T>> getNeighborIterator();
+
+    /**
+     * Iterates through a list of friends
+     * 
+     * @return Friends iterator
+     */
+    public Iterator<User<T>.Edge> getFriendsIterator();
 
     /**
      * Sees whether this vertex has at least one neighbor.
