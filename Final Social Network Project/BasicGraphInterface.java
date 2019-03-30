@@ -1,8 +1,3 @@
-/**
- * An interface of methods providing basic operations for directed and
- * undirected graphs that are either weighted or unweighted. @author Frank M.
- * Carrano @author Timothy M. Henry @version 4.0
- */
 public interface BasicGraphInterface<T> {
     /**
      * Adds a given vertex to this graph. @param vertexLabel An object that labels
@@ -28,9 +23,21 @@ public interface BasicGraphInterface<T> {
      */
     public boolean hasEdge(T begin, T end);
 
+    /** Sees whether this graph is empty. @return True if the graph is empty. */
+    public boolean isEmpty();
+
     /**
      * Gets the number of vertices in this graph. @return The number of vertices in
      * the graph.
      */
     public int getNumberOfVertices();
+
+    /**
+     * Gets the number of edges in this graph. @return The number of edges in the
+     * graph.
+     */
+    public int getNumberOfEdges();
+
+    /** Removes all vertices and edges from this graph. */
+    public void clear();
 } // end BasicGraphInterface
