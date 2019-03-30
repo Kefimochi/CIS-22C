@@ -128,7 +128,7 @@ class User<T> implements UserInterface<T> {
          return 0.0;
       } // end getWeight
 
-      protected void display() {
+      public void display() {
          Iterator<UserInterface<T>> i = getNeighborIterator();
 
          while (i.hasNext()) {
@@ -137,6 +137,10 @@ class User<T> implements UserInterface<T> {
 
          } // end while
          System.out.println();
+      }
+
+      public T getUser() {
+         return vertex.getName();
       }
    } // end Edge
 
@@ -153,7 +157,19 @@ class User<T> implements UserInterface<T> {
       System.out.println();
    } // end display
 
-   public Iterator<User<T>.Edge> getFriendsIterator() {
+   // public void getFriends() {
+   // System.out.print("Getting all of " + name + "'s friends of friends:'");
+   // Iterator<UserInterface<T>> i = getNeighborIterator();
+
+   // while (i.hasNext()) {
+   // User<T> v = (User<T>) i.next();
+   // System.out.print(v.getName() + " ");
+
+   // } // end while
+   // System.out.println();
+   // } // end display
+
+   public Iterator<Edge> getFriendsIterator() {
       return friendsList.getIterator();
    }
 } // end Vertex
