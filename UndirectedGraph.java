@@ -8,13 +8,13 @@ import java.util.Iterator;
  * @author Timothy M. Henry
  * @version 4.0
  */
-public class UndirectedGraph<T> extends SocialNetwork<T> implements SocialNetworkInterface<T> {
+public class UndirectedGraph<T> extends SocialNetwork<T> implements BasicGraphInterface<T> {
 	public UndirectedGraph() {
 		super();
 	} // end default constructor
 
-	public boolean addEdge(T begin, T end) {
-		return super.addEdge(begin, end) && super.addEdge(end, begin);
+	public boolean addEdge(T u1, T u2) {
+		return super.addEdge(u1, u2) && super.addEdge(u2, u1);
 		// Assertion: edge count is twice its correct value due to calling addEdge twice
 	} // end addEdge
 
